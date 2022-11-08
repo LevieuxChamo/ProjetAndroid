@@ -30,10 +30,19 @@ public class MainActivity extends AppCompatActivity {
 
         if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 100 );
+
+        }
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100 );
+        }
+        if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100 );
         }
 
 
-            Button play = findViewById(R.id.play);
+        Button play = findViewById(R.id.play);
             stop = findViewById(R.id.stop);
             record = findViewById(R.id.record);
 
@@ -49,41 +58,52 @@ public class MainActivity extends AppCompatActivity {
             myAudioRecorder.setOutputFile(outputFile);
 
             record.setOnClickListener(view -> {
+                Toast.makeText(getApplicationContext(), "Recording on prepared", Toast.LENGTH_LONG).show();
                 try {
                     myAudioRecorder.prepare();
+
                     myAudioRecorder.start();
+
                 } catch (IllegalStateException ise) {
                     //Android Catch
                 } catch (IOException ioe) {
                     //Input/Output catch
                 }
-
+                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
                 record.setEnabled(false);
                 stop.setEnabled(true);
 
-                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+
             });
             stop.setOnClickListener(view -> {
+                try {
+                    myAudioRecorder.stop();
+                    myAudioRecorder.reset();
+                    myAudioRecorder.release();
 
-                myAudioRecorder.stop();
-                myAudioRecorder.release();
-                myAudioRecorder=null;
+                }catch(IllegalStateException ise){
+                    //tt
+                }
                 record.setEnabled(true);
                 stop.setEnabled(false);
                 play.setEnabled(true);
-                //test
+
 
                 Toast.makeText(getApplicationContext(), "Audio recorder ouais", Toast.LENGTH_LONG).show();
             });
 
             play.setOnClickListener(view -> {
                 MediaPlayer mediaPlayer = new MediaPlayer();
+                mediaPlayer.reset();
+                Toast.makeText(getApplicationContext(), "Ecoute ca wesh", Toast.LENGTH_LONG).show();
                 try {
                     mediaPlayer.setDataSource(outputFile);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 
-                    Toast.makeText(getApplicationContext(), "Ecoute ca wesh", Toast.LENGTH_LONG).show();
+                    mediaPlayer.release();
+
+
                 } catch (Exception e) {
                     //tmtc
                 }
