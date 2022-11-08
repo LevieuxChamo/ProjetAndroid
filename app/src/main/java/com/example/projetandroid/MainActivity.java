@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 record.setEnabled(true);
                 stop.setEnabled(false);
                 play.setEnabled(true);
+                //test
 
                 Toast.makeText(getApplicationContext(), "Audio recorder ouais", Toast.LENGTH_LONG).show();
             });
