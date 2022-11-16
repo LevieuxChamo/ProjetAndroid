@@ -20,7 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button stop;
     private Button record;
-
+    private String recordFile;
+    private MediaRecorder myAudioRecorder;
 
 
     @Override
@@ -49,13 +50,16 @@ public class MainActivity extends AppCompatActivity {
             stop.setEnabled(false);
             play.setEnabled(false);
 
-            String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
 
-            MediaRecorder myAudioRecorder = new MediaRecorder();
+        String recordPath= this.getExternalFilesDir("/").getAbsolutePath();
+        recordFile="record.3gp";
+            //String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
+
+            myAudioRecorder = new MediaRecorder();
             myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-            myAudioRecorder.setOutputFile(outputFile);
+            myAudioRecorder.setOutputFile(recordPath+"/"+recordFile);
 
             record.setOnClickListener(view -> {
                 Toast.makeText(getApplicationContext(), "Recording on prepared", Toast.LENGTH_LONG).show();
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.reset();
                 Toast.makeText(getApplicationContext(), "Ecoute ca wesh", Toast.LENGTH_LONG).show();
                 try {
-                    mediaPlayer.setDataSource(outputFile);
+                    mediaPlayer.setDataSource(recordPath+"/"+recordFile);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 
