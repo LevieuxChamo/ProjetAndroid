@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button record;
     private String recordFile;
     private MediaRecorder myAudioRecorder;
+    private MediaPlayer mediaPlayer;
 
 
     @Override
@@ -97,19 +98,20 @@ public class MainActivity extends AppCompatActivity {
             });
 
             play.setOnClickListener(view -> {
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                mediaPlayer.reset();
-                Toast.makeText(getApplicationContext(), "Ecoute ca wesh", Toast.LENGTH_LONG).show();
+                mediaPlayer = new MediaPlayer();
+
+
                 try {
+                    Toast.makeText(getApplicationContext(), "Ecoute ca wesh", Toast.LENGTH_LONG).show();
                     mediaPlayer.setDataSource(recordPath+"/"+recordFile);
                     mediaPlayer.prepare();
                     mediaPlayer.start();
 
-                    mediaPlayer.release();
+
 
 
                 } catch (Exception e) {
-                    //tmtc
+                    e.printStackTrace();
                 }
 
             });
