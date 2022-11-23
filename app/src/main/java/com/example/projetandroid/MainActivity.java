@@ -6,7 +6,10 @@ import androidx.core.content.ContextCompat;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
 
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         Button play = findViewById(R.id.play);
             stop = findViewById(R.id.stop);
             record = findViewById(R.id.record);
-
             stop.setEnabled(false);
             play.setEnabled(false);
 
@@ -55,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
         String recordPath= this.getExternalFilesDir("/").getAbsolutePath();
         recordFile="record.3gp";
             //String outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
+           myAudioRecorder = new MediaRecorder();
 
-            myAudioRecorder = new MediaRecorder();
             myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
             myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             myAudioRecorder.setOutputFile(recordPath+"/"+recordFile);
+
+
 
             record.setOnClickListener(view -> {
                 Toast.makeText(getApplicationContext(), "Recording on prepared", Toast.LENGTH_LONG).show();
@@ -69,10 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
                     myAudioRecorder.start();
 
+
                 } catch (IllegalStateException ise) {
                     //Android Catch
-                } catch (IOException ioe) {
-                    //Input/Output catch
+                }catch (IOException ioe){
+
                 }
                 Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
                 record.setEnabled(false);
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 record.setEnabled(true);
                 stop.setEnabled(false);
                 play.setEnabled(true);
-
+//test
 
                 Toast.makeText(getApplicationContext(), "Audio recorder ouais", Toast.LENGTH_LONG).show();
             });
